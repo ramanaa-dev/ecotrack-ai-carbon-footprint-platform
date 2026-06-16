@@ -107,7 +107,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/ecotrack
 ### Frontend Configuration
 Create a `.env` file in the `frontend/` directory:
 ```env
-# Optional. The app uses /api by default in local development via the Vite proxy.
+# Optional. Use this only for local development if you want to override the default /api path.
 # VITE_API_URL=http://localhost:5000/api
 ```
 

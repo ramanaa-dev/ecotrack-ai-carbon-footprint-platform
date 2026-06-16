@@ -1,8 +1,12 @@
 import axios from 'axios';
 
-// Create instance. In production, it falls back to the current host + /api
+const baseURL = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_URL || '/api')
+  : '/api';
+
+// In production, always use the same-origin /api path so Vercel can proxy to Render.
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json'
   }
