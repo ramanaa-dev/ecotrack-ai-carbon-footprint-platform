@@ -107,7 +107,8 @@ DATABASE_URL=postgresql://username:password@localhost:5432/ecotrack
 ### Frontend Configuration
 Create a `.env` file in the `frontend/` directory:
 ```env
-VITE_API_URL=/api
+# Optional. The app uses /api by default in local development via the Vite proxy.
+# VITE_API_URL=http://localhost:5000/api
 ```
 
 ---
@@ -219,7 +220,7 @@ This project is structured as a monorepo. Follow these exact settings to deploy 
    - **Language:** `Python 3`
    - **Root Directory:** `backend` (This is critical to tell Render to execute inside the `backend` folder)
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `gunicorn app:app`
+   - **Start Command:** `gunicorn app:app --bind 0.0.0.0:$PORT`
 4. Expand the **Advanced** section and add the following **Environment Variables**:
    - `JWT_SECRET_KEY` = *[Any secure random string]*
    - `SECRET_KEY` = *[Any secure random string]*
@@ -236,8 +237,7 @@ This project is structured as a monorepo. Follow these exact settings to deploy 
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
 4. Expand the **Environment Variables** section and add:
-   - `VITE_API_URL` = `https://<your-render-backend-name>.onrender.com/api` *(Make sure to include the `/api` suffix and use your real Render backend URL)*
+   - `BACKEND_URL` = `https://<your-render-backend-name>.onrender.com` *(Use the Render base URL without `/api`; the Vercel proxy adds it automatically.)*
 5. Click **Deploy**. Vercel will build and assign you a live link (e.g., `https://ecotrack-frontend.vercel.app`).
 
-*Note: The frontend includes a [vercel.json](file:///D:/google%20hackthon/Ch3/ECo/frontend/vercel.json) file which automatically rewrites all navigation routes to `index.html` to prevent 404 errors on refreshes.*
-
+*Note: The frontend includes `frontend/vercel.json`, which rewrites navigation routes to `index.html` and forwards `/api/*` requests through a small Vercel proxy to your Render backend.*
