@@ -107,7 +107,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/ecotrack
 ### Frontend Configuration
 Create a `.env` file in the `frontend/` directory:
 ```env
-# Optional. Use this only for local development if you want to override the default /api path.
+# Optional. Use this to point the frontend at a local backend or your Render API.
 # VITE_API_URL=http://localhost:5000/api
 ```
 
@@ -237,7 +237,7 @@ This project is structured as a monorepo. Follow these exact settings to deploy 
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
 4. Expand the **Environment Variables** section and add:
-   - `BACKEND_URL` = `https://<your-render-backend-name>.onrender.com` *(Use the Render base URL without `/api`; the Vercel proxy adds it automatically.)*
+   - `VITE_API_URL` = `https://<your-render-backend-name>.onrender.com/api` *(This makes the browser call Render directly and avoids the Vercel proxy path.)*
 5. Click **Deploy**. Vercel will build and assign you a live link (e.g., `https://ecotrack-frontend.vercel.app`).
 
-*Note: The frontend includes `frontend/vercel.json`, which rewrites navigation routes to `index.html` and forwards `/api/*` requests through a small Vercel proxy to your Render backend.*
+*Note: The frontend includes `frontend/vercel.json`, which rewrites navigation routes to `index.html` for SPA refreshes. API requests should go directly to Render through `VITE_API_URL`.*
