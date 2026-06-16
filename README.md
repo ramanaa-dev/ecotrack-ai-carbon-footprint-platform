@@ -204,3 +204,40 @@ The platform seeds sample credentials on launch. Log in with:
 | **Standard Eco Warrior** | `user@ecotrack.ai` | `user123` |
 
 *The user account pre-logs 10 days of dummy entries to populate analytics dashboards and ML forecast models instantly.*
+
+---
+
+## ☁️ Deployment Guide (Vercel & Render)
+
+This project is structured as a monorepo. Follow these exact settings to deploy successfully.
+
+### 1. Backend Deployment (Render)
+1. Sign in to [Render](https://render.com) and click **New > Web Service**.
+2. Connect your GitHub repository.
+3. In the creation wizard, configure the following:
+   - **Name:** `ecotrack-backend`
+   - **Language:** `Python 3`
+   - **Root Directory:** `backend` (This is critical to tell Render to execute inside the `backend` folder)
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app`
+4. Expand the **Advanced** section and add the following **Environment Variables**:
+   - `JWT_SECRET_KEY` = *[Any secure random string]*
+   - `SECRET_KEY` = *[Any secure random string]*
+   - Add a **PostgreSQL Database** on Render, copy its **External Database URL**, and add it as:
+     `DATABASE_URL` = *[Your database connection string starting with postgresql://]*
+5. Click **Create Web Service**. Wait for the build to finish. Copy your live backend URL (e.g., `https://ecotrack-backend.onrender.com`).
+
+### 2. Frontend Deployment (Vercel)
+1. Sign in to [Vercel](https://vercel.com) and click **Add New > Project**.
+2. Import your GitHub repository.
+3. In the project setup wizard:
+   - **Framework Preset:** `Vite`
+   - **Root Directory:** Click *Edit* and select the `frontend` folder (This is critical to build the frontend inside `frontend`)
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+4. Expand the **Environment Variables** section and add:
+   - `VITE_API_URL` = `https://<your-render-backend-name>.onrender.com/api` *(Make sure to include the `/api` suffix and use your real Render backend URL)*
+5. Click **Deploy**. Vercel will build and assign you a live link (e.g., `https://ecotrack-frontend.vercel.app`).
+
+*Note: The frontend includes a [vercel.json](file:///D:/google%20hackthon/Ch3/ECo/frontend/vercel.json) file which automatically rewrites all navigation routes to `index.html` to prevent 404 errors on refreshes.*
+
